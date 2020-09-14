@@ -1,0 +1,124 @@
+<!--
+		Name: <Holden Thompson>
+		Date: <07/26/2020>
+		Class: CSCI2447, Javascript Fundamentals
+		Project 6
+ -->
+
+ <!DOCTYPE html>
+ <html>
+   <head>
+   <title>Whack-A-Mole (CSCI2447)</title>
+   <!-- CSS styles: This is for me to worry about; not you. -->
+	<link href="css/game.css" rel="stylesheet" />
+	<script src="js/jquery-3.5.1.min.js"></script>
+	
+	<script>
+	// Global Stuff
+	var score = 0;
+	var t,m;
+	var timeRemaining = 30;
+	var mole='<img src="img/mole.jpg"/>';
+	
+	// Jquery
+	$(document).ready(function() {
+
+		$("#start_button").click(function(){
+			beginGame();
+		});
+
+		$('#gamespace').on('click', 'img', function(){
+			increment();
+			$("img").hide();
+        });
+	});//end Jquery ready func
+   
+	//Javascript Game Functions
+    function beginGame() {
+		remainSec();
+		addMole();
+		increment();
+		$('#gamespace').css('background-color','blue');
+	};
+	function getY(min, max){
+		var y=Math.floor((Math.random()*300)+1);
+		return y;
+		alert(y)
+	};
+	function getX(min, max){
+		var x=Math.floor((Math.random()*500)+1);
+		return x;
+		alert(x)
+	};
+	function increment(){
+		score += 1;
+		$("#score")[0].innerHTML = score;
+	};
+	function remainSec(){
+		if(timeRemaining<0){
+			clearTimeout(t);
+		}else{
+		$("#timer").show();
+		$("#timer").html(timeRemaining+ " seconds remaining");
+		t = setTimeout('remainSec()', 1000);
+		timeRemaining --;
+		}
+    }
+	function addMole(){
+		var xPos = getX()
+		var yPos = getY()
+		if(timeRemaining<0){
+			clearTimeout(m);
+		}else{
+        $("#gamespace").append('<img src="img/mole.jpg"style="top:'+yPos+'px;left:'+xPos+'px;"/>');
+		m = setTimeout('addMole()', randomMoleSpawn());
+		}
+	}
+	function randomMoleSpawn(){
+		var MoleMaddness=Math.random();
+		return MoleMaddness;
+	}
+	function play() {
+		if(timeRemaining<0){
+			clearTimeout(m);
+			audio.stop();
+		}else{
+			var audio = document.getElementById("audio");
+			audio.play();
+		}
+    }  
+   </script>
+   </head>
+
+   <body>
+ 
+ 
+	 <div id="content">
+ 
+		 <h1>Whack-A-Mole</h1>
+ 
+		 <p>
+		<br>The Moles are out for blood, they are cursed with of everlasting life as soon as you strike one down ten will rise from it's corpse
+		<br>You better have brought a boomstick ace...
+		<br>After clicking "start", you will have 30 seconds to click as many moles as you can. The moles appear randomly so be ready!
+		</p>
+ 
+		 <div id="controls">
+			<span id="score">0 pts</span>
+			<button type="button" id="start_button" value="PLAY" onclick=play()>Start!</button>
+			
+    		<audio id="audio" src="MoleDoom.mp3"></audio>
+		 </div>
+ 
+		 <div id="timer">30 seconds left
+
+		 </div>
+ 
+		 <div id="gamespace">
+
+		 </div>
+ 
+	 </div>
+   </body>
+ </html>
+ 
